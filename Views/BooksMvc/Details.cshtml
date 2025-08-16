@@ -1,0 +1,22 @@
+﻿@model BookWorld.DTOs.BookDTO
+
+@{
+    ViewData["Title"] = "Book Details";
+}
+
+<h1>Book Details</h1>
+<div>
+    <h4>Book</h4>
+    <hr />
+    <dl>
+        <dt>ID</dt>
+        <dd>@Model.Id</dd>
+        <dt>Title</dt>
+        <dd>@Model.Title</dd>
+        <dt>Author</dt>
+        <dd>@Model.AuthorName</dd>
+        <dt>Genres</dt>
+        <dd>@string.Join(", ", Model.Genres)</dd>
+    </dl>
+</div>
+<a asp-action="Index">Back to List</a>

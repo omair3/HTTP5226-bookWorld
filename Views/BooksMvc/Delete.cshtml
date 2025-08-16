@@ -1,0 +1,27 @@
+﻿@model BookWorld.DTOs.BookDTO
+
+@{
+    ViewData["Title"] = "Delete Book";
+}
+
+<h1>Delete Book</h1>
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Book</h4>
+    <hr />
+    <dl>
+        <dt>ID</dt>
+        <dd>@Model.Id</dd>
+        <dt>Title</dt>
+        <dd>@Model.Title</dd>
+        <dt>Author</dt>
+        <dd>@Model.AuthorName</dd>
+        <dt>Genres</dt>
+        <dd>@string.Join(", ", Model.Genres)</dd>
+    </dl>
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit">Delete</button>
+    </form>
+</div>
+<a asp-action="Index">Back to List</a>

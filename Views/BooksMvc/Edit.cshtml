@@ -1,0 +1,87 @@
+﻿@model BookWorld.DTOs.BookDTO
+
+@{
+    ViewData["Title"] = "Edit Book";
+}
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h4>@ViewData["Title"]</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit" method="post" class="row g-3">
+                <input type="hidden" asp-for="Id" />
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Title" class="form-label"></label>
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="AuthorName" class="form-label"></label>
+                        <input asp-for="AuthorName" class="form-control" />
+                        <span asp-validation-for="AuthorName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        <label>Genres</label>
+                        @{
+                            List<string> genres = new List<string>();
+                            if (ViewBag.AllGenres != null && ViewBag.AllGenres is List<string>)
+                            {
+                                genres = (List<string>)ViewBag.AllGenres;
+                            }
+                        }
+                        <input type="hidden" asp-for="Genres" />
+                        @foreach (var genre in genres)
+                        {
+                            <div class="form-check">
+                                <input type="checkbox" name="selectedGenres" value="@genre" class="form-check-input"
+                                       checked="@(Model.Genres?.Contains(genre) == true)" />
+                                <label class="form-check-label">@genre</label>
+                            </div>
+                        }
+                        <span asp-validation-for="Genres" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        <label>Best Seller</label>
+                        <div class="form-check">
+                            <input type="radio" asp-for="IsBestSeller" value="true" class="form-check-input"
+                                   checked="@(Model.IsBestSeller == true)" />
+                            <label class="form-check-label">Yes</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" asp-for="IsBestSeller" value="false" class="form-check-input"
+                                   checked="@(Model.IsBestSeller == false)" />
+                            <label class="form-check-label">No</label>
+                        </div>
+                        <span asp-validation-for="IsBestSeller" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-success" />
+                        <a asp-action="Index" class="btn btn-secondary ms-2">Back</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.querySelector('form').addEventListener('submit', function (e) {
+            const checkboxes = document.querySelectorAll('input[name="selectedGenres"]:checked');
+            const genres = Array.from(checkboxes).map(cb => cb.value);
+            document.querySelector('input[name="Genres"]').value = JSON.stringify(genres);
+        });
+    </script>
+}

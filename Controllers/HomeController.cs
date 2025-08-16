@@ -1,32 +1,34 @@
-using System.Diagnostics;
-using BookWorld.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookWorld.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult Privacy()
+        [Authorize]
+        public IActionResult Dashboard()
         {
+            var userRole = User?.Identity?.IsAuthenticated == true ? User.IsInRole("Admin") ? "Admin" : "User" : null;
+            ViewData["UserRole"] = userRole;
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        [Authorize(Roles = "Admin")]
+        public IActionResult Admin()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return RedirectToAction("Dashboard");
+        }
+
+        [Authorize(Roles = "User")]
+        public IActionResult UserDashboard()
+        {
+            return RedirectToAction("Dashboard");
         }
     }
 }

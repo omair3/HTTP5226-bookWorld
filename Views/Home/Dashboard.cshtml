@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+    var userRole = ViewData["UserRole"] as string;
+}
+
+<h2>Dashboard</h2>
+@if (userRole == "Admin")
+{
+    <h3>Welcome, Admin!</h3>
+    <p><a asp-controller="BooksMvc" asp-action="Index">Manage Books</a></p>
+}
+else if (userRole == "User")
+{
+    <h3>Welcome, User!</h3>
+    <p><a asp-controller="BooksMvc" asp-action="Index">View Books</a></p>
+}
+else
+{
+    <p>Role not recognized. Please contact support.</p>
+}
